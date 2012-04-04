@@ -153,7 +153,19 @@
         attribute="toggle_visibility"
         />
 
+      <browser:page
+        name="set-metadata"
+        attribute="set_metadata"
+        />
+
     </browser:pages>
+
+    <browser:page
+        name="edit-portlet-metadata"
+        for="*"
+        template="templates/edit-portlet-metadata.pt"
+        permission="plone.app.portlets.ManageOwnPortlets"
+    />
 
     <!-- Adding view for portlet assignments -->
     <browser:view
