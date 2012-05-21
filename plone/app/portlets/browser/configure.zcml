@@ -158,14 +158,13 @@
         attribute="set_metadata"
         />
 
+      <browser:page
+        name="edit-portlet-metadata"
+        template="templates/edit-portlet-metadata.pt"
+       />
+
     </browser:pages>
 
-    <browser:page
-        name="edit-portlet-metadata"
-        for="*"
-        template="templates/edit-portlet-metadata.pt"
-        permission="plone.app.portlets.ManageOwnPortlets"
-    />
 
     <!-- Adding view for portlet assignments -->
     <browser:view

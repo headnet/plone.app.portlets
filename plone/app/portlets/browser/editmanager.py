@@ -400,3 +400,8 @@ class ManagePortletAssignments(BrowserView):
         settings['css_class'] = css_class
         self.request.response.redirect(self._nextUrl())
         return ''
+
+    def get_metdata(self, name):
+        assignments = aq_inner(self.context)
+        settings = IPortletAssignmentSettings(assignments[name])
+        return settings
