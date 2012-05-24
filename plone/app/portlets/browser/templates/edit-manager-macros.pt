@@ -72,7 +72,7 @@
                     <a href="#" class="metadata"
                        title="Metadata"
                        i18n:attributes="title"
-                       tal:attributes="href string:${portlet/metadata_url}&amp;referer=${view/url_quote_referer}">M</a>
+                       tal:attributes="href string:${portlet/metadata_url}&amp;referer=${view/url_quote_referer}">Meta</a>
                     </span>
                     <a tal:omit-tag="not:portlet/editview"
                        tal:attributes="href string:${portlet/editview}?referer=${view/url_quote_referer}"
