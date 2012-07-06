@@ -119,7 +119,10 @@ class ColumnPortletManagerRenderer(PortletManagerRenderer):
         """
 
         if info['settings'].get('is_local_portlet', False):
-            if '/'.join(self.context.getPhysicalPath()) != info['key']:
+            compare_context = self.context
+            if isDefaultPage(self.context, self.request):
+                compare_context = aq_parent(aq_inner(self.context))
+            if '/'.join(compare_context.getPhysicalPath()) != info['key']:
                 return False
 
         return True
