@@ -394,10 +394,11 @@ class ManagePortletAssignments(BrowserView):
         self.request.response.redirect(self._nextUrl())
         return ''
 
-    def set_metadata(self, name, css_class):
+    def set_metadata(self, name, css_class, is_local_portlet=False):
         assignments = aq_inner(self.context)
         settings = IPortletAssignmentSettings(assignments[name])
         settings['css_class'] = css_class
+        settings['is_local_portlet'] = is_local_portlet
         self.request.response.redirect(self._nextUrl())
         return ''
 

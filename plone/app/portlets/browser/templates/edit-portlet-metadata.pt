@@ -12,10 +12,12 @@
         <form tal:attributes="action string:${here/absolute_url}/@@set-metadata" method="POST">
             <input type="hidden" name="name" tal:attributes="value request/name"/>
             <input type="hidden" name="referer" tal:attributes="value request/referer"/>
-            <select name="css_class">
-                <option value="class1">Class1</option>
-                <option value="class2">Class2</option>
-            </select>  
+            <select name="css_class" tal:define="css_class python: view.get_metdata(request.get('name', '')).get('css_class', '')">
+                <option value="class1" tal:attributes="selected python:css_class == 'class1'">Class1</option>
+                <option value="class2" tal:attributes="selected python:css_class == 'class2'">Class2</option>
+            </select>
+            <br/>
+            <input type="checkbox" name="is_local_portlet" value="1" tal:attributes="checked python:view.get_metdata(request.get('name', '')).get('is_local_portlet', '') == '1'">Er portleten lokal?<br/>
             <input type="submit" name="submit" value="Send"/> 
         </form>
 </metal:main>

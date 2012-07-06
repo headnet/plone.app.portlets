@@ -1,12 +1,15 @@
 import logging
 import sys
 
+
 from zope.component import adapts, getMultiAdapter
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IBrowserView
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
-from Acquisition import Explicit, aq_inner, aq_acquire
+from Acquisition import Explicit, aq_inner, aq_acquire, aq_parent
+from Acquisition.interfaces import IAcquirer
+
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from ZODB.POSException import ConflictError
@@ -19,7 +22,9 @@ from plone.app.portlets.interfaces import IDashboard
 from plone.memoize.view import memoize
 from plone.portlets.interfaces import IPortletRetriever
 from plone.portlets.utils import hashPortletInfo
-from plone.portlets.interfaces import IPortletAssignmentSettings
+from plone.portlets.interfaces import IPortletAssignmentSettings,IPortletAssignmentMapping
+from Products.CMFPlone.utils import isDefaultPage
+
 
 logger = logging.getLogger('portlets')
 
@@ -107,6 +112,17 @@ class ColumnPortletManagerRenderer(PortletManagerRenderer):
             logger.exception('Error while rendering %r' % self)
             aq_acquire(self, 'error_log').raising(sys.exc_info())
             return self.error_message()
+
+
+    def available(self, info):
+        """Only make available on definition context
+        """
+
+        if info['settings'].get('is_local_portlet', False):
+            if '/'.join(self.context.getPhysicalPath()) != info['key']:
+                return False
+
+        return True
 
 
 class DashboardPortletManagerRenderer(ColumnPortletManagerRenderer):
