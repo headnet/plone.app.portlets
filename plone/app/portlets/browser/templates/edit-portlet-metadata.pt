@@ -1,0 +1,24 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+<body>
+
+<metal:main fill-slot="main">
+        Portlet CSS klasse 
+        <form tal:attributes="action string:${here/absolute_url}/@@set-metadata" method="POST">
+            <input type="hidden" name="name" tal:attributes="value request/name"/>
+            <input type="hidden" name="referer" tal:attributes="value request/referer"/>
+            <select name="css_class" tal:define="css_class python: view.get_metdata(request.get('name', '')).get('css_class', '')">
+                <option value="class1" tal:attributes="selected python:css_class == 'class1'">Class1</option>
+                <option value="class2" tal:attributes="selected python:css_class == 'class2'">Class2</option>
+            </select>
+            <input type="submit" name="submit" value="Send"/> 
+        </form>
+</metal:main>
+
+</body>
+</html>

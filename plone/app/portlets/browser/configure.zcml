@@ -153,6 +153,16 @@
         attribute="toggle_visibility"
         />
 
+      <browser:page
+        name="set-metadata"
+        attribute="set_metadata"
+        />
+
+      <browser:page
+        name="edit-portlet-metadata"
+        template="templates/edit-portlet-metadata.pt"
+       />
+
     </browser:pages>
 
     <!-- Adding view for portlet assignments -->

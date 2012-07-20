@@ -17,12 +17,25 @@ from plone.app.portlets.interfaces import IColumn
 from plone.app.portlets.interfaces import IDashboard
 #from plone.app.layout.navigation.defaultpage import isDefaultPage
 
+from plone.memoize.view import memoize
+from plone.portlets.interfaces import IPortletAssignmentSettings
+
+
 logger = logging.getLogger('portlets')
 
 
 class PortletManagerRenderer(BasePortletManagerRenderer, Explicit):
     """A Zope 2 implementation of the default PortletManagerRenderer
     """
+
+    @memoize
+    def _lazyLoadPortlets(self, manager):
+        items = super(PortletManagerRenderer, self)._lazyLoadPortlets(manager)
+        for info in items:
+            assignments = info['assignment'].__parent__
+            settings = IPortletAssignmentSettings(assignments[info['name']])
+            info['settings'] = settings
+        return items
 
     def _dataToPortlet(self, data):
         """Helper method to get the correct IPortletRenderer for the given
