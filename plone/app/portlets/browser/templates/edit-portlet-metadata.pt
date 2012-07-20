@@ -8,13 +8,18 @@
 <body>
 
 <metal:main fill-slot="main">
-        Portlet CSS klasse 
+        Portlet CSS class
         <form tal:attributes="action string:${here/absolute_url}/@@set-metadata" method="POST">
             <input type="hidden" name="name" tal:attributes="value request/name"/>
             <input type="hidden" name="referer" tal:attributes="value request/referer"/>
-            <select name="css_class" tal:define="css_class python: view.get_metdata(request.get('name', '')).get('css_class', '')">
-                <option value="class1" tal:attributes="selected python:css_class == 'class1'">Class1</option>
-                <option value="class2" tal:attributes="selected python:css_class == 'class2'">Class2</option>
+            <select name="css_class"
+                    tal:define="selected_css_class python: view.get_metdata(request.get('name', '')).get('css_class', '')">
+                <tal:block repeat="css_class python:here.portal_properties.site_properties.getProperty('css_classes').split('\n')">
+                    <option value=""
+                        tal:attributes="value python:css_class;
+                                        selected python:selected_css_class == css_class"
+                        tal:content="css_class"></option>
+                </tal:block>
             </select>
             <input type="submit" name="submit" value="Send"/> 
         </form>
