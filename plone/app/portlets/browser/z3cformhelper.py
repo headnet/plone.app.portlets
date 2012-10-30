@@ -26,6 +26,9 @@ class AddForm(form.AddForm):
         return ob
 
     def __call__(self):
+        self.request.set('disable_border', 1)
+        self.request.set('disable_plone.leftcolumn', 1)
+        self.request.set('disable_plone.rightcolumn', 1)
         IPortletPermissionChecker(aq_parent(aq_inner(self.context)))()
         return super(AddForm, self).__call__()
 
@@ -91,6 +94,9 @@ class EditForm(form.EditForm):
     template = ViewPageTemplateFile('templates/z3cform-portlets-pageform.pt')
 
     def __call__(self):
+        self.request.set('disable_border', 1)
+        self.request.set('disable_plone.leftcolumn', 1)
+        self.request.set('disable_plone.rightcolumn', 1)
         IPortletPermissionChecker(aq_parent(aq_inner(self.context)))()
         return super(EditForm, self).__call__()
 
