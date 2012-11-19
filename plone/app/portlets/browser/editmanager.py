@@ -134,7 +134,7 @@ class EditPortletManagerRenderer(Explicit):
                 'up_url'      : '%s/@@move-portlet-up?name=%s' % (base_url, name),
                 'down_url'    : '%s/@@move-portlet-down?name=%s' % (base_url, name),
                 'delete_url'  : '%s/@@delete-portlet?name=%s' % (base_url, name),
-                'metadata_url': '%s/@@edit-portlet-metadata?name=%s' % (base_url, name),
+                'metadata_url': '%s/@@edit-portlet-metadata?form.widgets.name=%s' % (base_url, name),
                 'hide_url'    : '%s/@@toggle-visibility?name=%s' % (base_url, name),
                 'show_url'    : '%s/@@toggle-visibility?name=%s' % (base_url, name),
                 'visible'     : visible,
@@ -393,16 +393,3 @@ class ManagePortletAssignments(BrowserView):
         settings['visible'] = not visible
         self.request.response.redirect(self._nextUrl())
         return ''
-
-    def set_metadata(self, name, css_class, is_local_portlet=False):
-        assignments = aq_inner(self.context)
-        settings = IPortletAssignmentSettings(assignments[name])
-        settings['css_class'] = css_class
-        settings['is_local_portlet'] = is_local_portlet
-        self.request.response.redirect(self._nextUrl())
-        return ''
-
-    def get_metdata(self, name):
-        assignments = aq_inner(self.context)
-        settings = IPortletAssignmentSettings(assignments[name])
-        return settings

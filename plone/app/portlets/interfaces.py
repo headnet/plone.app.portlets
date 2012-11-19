@@ -5,7 +5,6 @@ from plone.portlets.interfaces import IPortletManager
 from plone.portlets.interfaces import IPlacelessPortletManager
 from plone.portlets.interfaces import IPortletRenderer
 
-
 class IPortletTypeInterface(Interface):
     """IInterface for portlet type interfaces. The portlet ZCML directive
     will register the portlet type interface as a utility providing this
