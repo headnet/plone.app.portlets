@@ -155,6 +155,8 @@
 
     </browser:pages>
 
+    <!-- Changes for metadata --> 
+
     <browser:page
       name="edit-portlet-metadata"
       class=".metadata.PortletMetadataFormView"
@@ -162,7 +164,13 @@
       permission="plone.app.portlets.ManageOwnPortlets"
       />
 
-    <adapter factory=".metadata.PortletMetadataProxy"/>
+    <adapter factory=".metadata.PortletMetadataAdapter"/>
+
+    <utility
+        factory=".metadata.CssClassesVocabulary"
+        name="plone.app.portlets.CssClasses"
+        provides="zope.schema.interfaces.IVocabularyFactory"
+    />
 
     <!-- Adding view for portlet assignments -->
     <browser:view

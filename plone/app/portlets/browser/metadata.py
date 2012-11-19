@@ -12,9 +12,21 @@ from zope.component import adapts
 from zope.interface import implements
 from zope.i18nmessageid import MessageFactory
 
+from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
+from zope.schema.interfaces import IVocabularyFactory
+
+
 from z3c.form import button, field, interfaces
 
 _ = MessageFactory('plone')
+
+
+class CssClassesVocabulary(object):
+    implements(IVocabularyFactory)
+
+    def __call__(self, context):
+        return SimpleVocabulary([SimpleTerm('class1'),
+                                 SimpleTerm('class2')])
 
 
 class IPortletMetadata(form.Schema):
@@ -29,7 +41,7 @@ class IPortletMetadata(form.Schema):
 
     css_class = schema.Choice(title=_(u"CSS class"),
                               description=_(u" "),
-                              values=['class1', 'class2'],
+                              vocabulary='plone.app.portlets.CssClasses',
                               required=False)
 
     exclude_search = schema.Bool(title=(u"Exclude from search"),
@@ -38,7 +50,7 @@ class IPortletMetadata(form.Schema):
                                  default=True)
 
 
-class PortletMetadataProxy(object):
+class PortletMetadataAdapter(object):
     adapts(IPortletAssignmentMapping)
     implements(IPortletMetadata)
 
