@@ -47,7 +47,7 @@ class EditPortletManagerRenderer(Explicit):
 
     def __init__(self, context, request, view, manager):
         self.__parent__ = view
-        self.manager = manager # part of interface
+        self.manager = manager  # part of interface
         self.context = context
         self.request = request
         self.__updated = False
@@ -117,6 +117,8 @@ class EditPortletManagerRenderer(Explicit):
             else:
                 editviewName = '%s/%s/edit' % (base_url, name)
 
+            settingsviewName = '%s/%s/edit-portlet-metadata' % (base_url, name)
+
             portlet_hash = hashPortletInfo(
                 dict(manager=manager.__name__, category=category,
                      key=key, name=name,))
@@ -134,7 +136,7 @@ class EditPortletManagerRenderer(Explicit):
                 'up_url'      : '%s/@@move-portlet-up?name=%s' % (base_url, name),
                 'down_url'    : '%s/@@move-portlet-down?name=%s' % (base_url, name),
                 'delete_url'  : '%s/@@delete-portlet?name=%s' % (base_url, name),
-                'metadata_url': '%s/@@edit-portlet-metadata?form.widgets.name=%s' % (base_url, name),
+                'metadata_url': settingsviewName,
                 'hide_url'    : '%s/@@toggle-visibility?name=%s' % (base_url, name),
                 'show_url'    : '%s/@@toggle-visibility?name=%s' % (base_url, name),
                 'visible'     : visible,
@@ -163,7 +165,7 @@ class EditPortletManagerRenderer(Explicit):
                 return False
             return True
 
-        portlets =  [{
+        portlets = [{
             'title' : p.title,
             'description' : p.description,
             'addview' : '%s/+/%s' % (addviewbase, p.addview)
@@ -349,7 +351,7 @@ class ManagePortletAssignments(BrowserView):
 
         idx = keys.index(name)
         keys.remove(name)
-        keys.insert(idx-1, name)
+        keys.insert(idx - 1, name)
         assignments.updateOrder(keys)
 
         self.request.response.redirect(self._nextUrl())
@@ -364,7 +366,7 @@ class ManagePortletAssignments(BrowserView):
 
         idx = keys.index(name)
         keys.remove(name)
-        keys.insert(idx+1, name)
+        keys.insert(idx + 1, name)
         assignments.updateOrder(keys)
 
         self.request.response.redirect(self._nextUrl())

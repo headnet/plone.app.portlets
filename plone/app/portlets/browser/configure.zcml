@@ -159,8 +159,8 @@
 
     <browser:page
       name="edit-portlet-metadata"
-      class=".metadata.PortletMetadataFormView"
-      for="plone.portlets.interfaces.IPortletAssignmentMapping"
+      class=".metadata.PortletMetadataEditForm"
+      for="plone.portlets.interfaces.IPortletAssignment"
       permission="plone.app.portlets.ManageOwnPortlets"
       />
 
