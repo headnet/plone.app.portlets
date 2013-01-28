@@ -11,13 +11,14 @@ from plone.app.portlets import PloneMessageFactory as _
 from plone.app.portlets.browser.interfaces import IPortletAddForm
 from plone.app.portlets.browser.interfaces import IPortletEditForm
 from plone.app.portlets.interfaces import IPortletPermissionChecker
+from Products.statusmessages.interfaces import IStatusMessage
 
 
 class AddForm(form.AddForm):
     implements(IPortletAddForm)
 
     label = _(u"Configure portlet")
-    
+
     template = ViewPageTemplateFile('templates/z3cform-portlets-pageform.pt')
 
     def add(self, object):
@@ -35,7 +36,7 @@ class AddForm(form.AddForm):
     def create_assignment(self, data):
         # subclassed addforms should create the actual Assignment instance and return it.
         raise NotImplementedError()
-    
+
     def create(self, data):
         # adapted from plone.dexterity.browser.add.DefaultAddForm to make advanced fields like RelationField work.
         content = self.create_assignment(data)
@@ -90,7 +91,7 @@ class EditForm(form.EditForm):
     implements(IPortletEditForm)
 
     label = _(u"Modify portlet")
-    
+
     template = ViewPageTemplateFile('templates/z3cform-portlets-pageform.pt')
 
     def __call__(self):
@@ -122,8 +123,12 @@ class EditForm(form.EditForm):
         changes = self.applyChanges(data)
         if changes:
             self.status = "Changes saved"
+            IStatusMessage(self.request).addStatusMessage(_(u"Changes saved"),
+                                                          "info")
         else:
             self.status = "No changes"
+            IStatusMessage(self.request).addStatusMessage(_(u"No changes"),
+                                                          "info")
 
         nextURL = self.nextURL()
         if nextURL:
