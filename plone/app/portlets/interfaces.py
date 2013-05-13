@@ -33,6 +33,9 @@ class IPortletPermissionChecker(Interface):
         something fishy is going on.
         """
 
+class IDefaultPortletManager(IPortletManager):
+    """Default registration for portlets """
+
 
 class IColumn(IPortletManager):
     """Common base class for left and right columns.
