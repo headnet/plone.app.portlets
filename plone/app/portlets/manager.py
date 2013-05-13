@@ -35,6 +35,7 @@ class PortletManagerRenderer(BasePortletManagerRenderer, Explicit):
             assignments = info['assignment'].__parent__
             settings = IPortletAssignmentSettings(assignments[info['name']])
             info['settings'] = settings
+        items.sort(cmp=lambda x,y: x['key'] == y['key'] and 0 or (x['key'] < y['key'] and -1 or (x['key'] > y['key'] and 1)))
         return items
 
     def _dataToPortlet(self, data):
