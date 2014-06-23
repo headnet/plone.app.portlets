@@ -6,7 +6,7 @@
     i18n:domain="plone"
     tal:condition="view/enabled">
 
-    <dt class="portletHeader">
+    <dt class="portletHeader" tal:condition="not:view/omit_border">
         <span class="portletTopLeft"></span>
         <a href=""
            tal:attributes="href view/siteurl"

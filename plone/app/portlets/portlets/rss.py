@@ -217,27 +217,44 @@ class IRSSPortlet(IPortletDataProvider):
         title=_(u'Title'),
         description=_(u'Title of the portlet.  If omitted, the title of the feed will be used.'),
         required=False,
-        default=u'')
+        default=u''
+    )
 
-    count = schema.Int(title=_(u'Number of items to display'),
-                       description=_(u'How many items to list.'),
-                       required=True,
-                       default=5)
-    url = schema.TextLine(title=_(u'URL of RSS feed'),
-                        description=_(u'Link of the RSS feed to display.'),
-                        required=True,
-                        default=u'')
+    count = schema.Int(
+        title=_(u'Number of items to display'),
+        description=_(u'How many items to list.'),
+        required=True,
+        default=5
+    )
 
-    timeout = schema.Int(title=_(u'Feed reload timeout'),
-                        description=_(u'Time in minutes after which the feed should be reloaded.'),
-                        required=True,
-                        default=100)
+    url = schema.TextLine(
+        title=_(u'URL of RSS feed'),
+        description=_(u'Link of the RSS feed to display.'),
+        required=True,
+        default=u''
+    )
+
+    timeout = schema.Int(
+        title=_(u'Feed reload timeout'),
+        description=_(u'Time in minutes after which the feed should be reloaded.'),
+        required=True,
+        default=100
+    )
+
+    omit_border = schema.Bool(
+        title=_(u"Omit portlet border"),
+        description=_(u"Tick this box if you want to render the text above "
+                      u"without the standard header, border or footer."),
+        required=True,
+        default=False
+    )
 
 
 class Assignment(base.Assignment):
     implements(IRSSPortlet)
 
     portlet_title = u''
+    omit_border = False
 
     @property
     def title(self):
@@ -248,11 +265,12 @@ class Assignment(base.Assignment):
         else:
             return u'RSS: '+feed.title[:20]
 
-    def __init__(self, portlet_title=u'', count=5, url=u"", timeout=100):
+    def __init__(self, portlet_title=u'', count=5, url=u"", timeout=100, omit_border=False):
         self.portlet_title = portlet_title
         self.count = count
         self.url = url
         self.timeout = timeout
+        self.omit_border = omit_border
 
 
 class Renderer(base.DeferredRenderer):
@@ -320,6 +338,10 @@ class Renderer(base.DeferredRenderer):
     def enabled(self):
         return self._getFeed().ok
 
+    @property
+    def omit_border(self):
+        return self.data.omit_border
+
 
 class AddForm(base.AddForm):
     form_fields = form.Fields(IRSSPortlet)
@@ -327,10 +349,13 @@ class AddForm(base.AddForm):
     description = _(u"This portlet displays an RSS feed.")
 
     def create(self, data):
-        return Assignment(portlet_title=data.get('portlet_title', u''),
-                          count=data.get('count', 5),
-                          url = data.get('url', ''),
-                          timeout = data.get('timeout', 100))
+        return Assignment(
+            portlet_title=data.get('portlet_title', u''),
+            count=data.get('count', 5),
+            url=data.get('url', ''),
+            timeout=data.get('timeout', 100),
+            omit_border=data.get('omit_border', False)
+        )
 
 
 class EditForm(base.EditForm):
