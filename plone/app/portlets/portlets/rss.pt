@@ -37,7 +37,7 @@
             </a>
         </dd>
     </tal:rss>
-    <dd class="portletFooter" tal:condition="view/feedAvailable">
+    <dd class="portletFooter" tal:condition="view/show_morelink|nothing">
         <a href=""
            tal:condition="view/siteurl"
            tal:attributes="href view/siteurl">

@@ -249,6 +249,16 @@ class IRSSPortlet(IPortletDataProvider):
         default=False
     )
 
+    show_more_link = schema.Bool(
+        title=_(u"Show more link"),
+        description=_(u"When unchecked, the SHOW MORE... link will not be "
+                      u"displayed. Else it will be displayed if there are more "
+                      u"items than the number defined in the previous field."),
+        required=True,
+        default=True
+    )
+
+
 
 class Assignment(base.Assignment):
     implements(IRSSPortlet)
@@ -265,12 +275,13 @@ class Assignment(base.Assignment):
         else:
             return u'RSS: '+feed.title[:20]
 
-    def __init__(self, portlet_title=u'', count=5, url=u"", timeout=100, omit_border=False):
+    def __init__(self, portlet_title=u'', count=5, url=u"", timeout=100, omit_border=False, show_more_link=True):
         self.portlet_title = portlet_title
         self.count = count
         self.url = url
         self.timeout = timeout
         self.omit_border = omit_border
+        self.show_more_link = show_more_link
 
 
 class Renderer(base.DeferredRenderer):
@@ -329,6 +340,15 @@ class Renderer(base.DeferredRenderer):
     def feedAvailable(self):
         """checks if the feed data is available"""
         return self._getFeed().ok
+
+    @property
+    def show_morelink(self):
+        """Do we have to display 'show more...' link?"""
+
+        if not getattr(self.data, 'show_more_link', True):
+            return False
+
+        return self.feedAvailable and len(self._getFeed().items) > self.data.count
 
     @property
     def items(self):
